@@ -54,9 +54,9 @@ public class Main {
 	public static void main(String[] args) throws JCoException {
 
         Properties connectProperties = new Properties();
-        connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, "host");
-        connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR,  "06");
-        connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, "213");
+        connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, "");
+        connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR,  "00");
+        connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, "000");
         connectProperties.setProperty(DestinationDataProvider.JCO_USER,   "username");
         connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, "password");
         connectProperties.setProperty(DestinationDataProvider.JCO_LANG,   "en");

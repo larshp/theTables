@@ -17,7 +17,10 @@ public class MouseListenerTables implements MouseListener, MouseMotionListener {
 			DrawTable t = it.next();
 			t.selected = false;
 			if (found == false
-					&& t.clickCheck(new Point(arg0.getX(), arg0.getY()))) {
+					&& t.clickCheck(new Point(
+							 (arg0.getX() - Main.offsetx), 
+							 (arg0.getY() - Main.offsety)
+							))) {
 				t.selected = true;
 				found = true;
 			}

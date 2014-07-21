@@ -1,5 +1,7 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class KeyListenerTables implements KeyListener {
 
@@ -34,6 +36,7 @@ public class KeyListenerTables implements KeyListener {
 
 	public void keyTyped(KeyEvent arg0) {
 		// System.out.println(arg0.getKeyChar() + 0);
+		NumberFormat formatter = new DecimalFormat("#0.00");
 		
 		if(arg0.getKeyChar() == 10) { // enter
 			Console.parseCommand();
@@ -45,8 +48,10 @@ public class KeyListenerTables implements KeyListener {
 			if(Main.zoom - 0.2 > 0.1) {
 				Main.zoom = Main.zoom - 0.2;
 			}
+			Console.addLine("Zoom "+ formatter.format(Main.zoom));
 		} else if(arg0.getKeyChar() == 43) { // plus
 			Main.zoom = Main.zoom + 0.2;
+			Console.addLine("Zoom "+ formatter.format(Main.zoom));
 		} else {
 		    // System.out.println("pressed: " + (arg0.getKeyChar() + 0));
 			Console.addChar(arg0.getKeyChar());
