@@ -51,11 +51,13 @@ public class Commands {
 			r = PageSize.A1;
 		} else if (sz.compareTo("A0") == 0) {
 			r = PageSize.A0;
+		} else if (sz.compareTo("PP") == 0) {
+			r = new Rectangle(17000, 4250);
 		} else {
 			Console.addLine("Unknown Size \"" + sz + "\"");
 			return;
 		}
-		
+
 		Main.renderWidth = (int) r.getWidth();
 		Main.renderHeight = (int) r.getHeight();
 		Main.renderSize = sz;
@@ -65,22 +67,21 @@ public class Commands {
 	private static String path() {
 		String current = null;
 		try {
-			current = new java.io.File( "." ).getCanonicalPath();
+			current = new java.io.File(".").getCanonicalPath();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-        return current + "/";
+		return current + "/";
 	}
-	
+
 	public static void save() {
 
-		
 		XStream xstream = new XStream();
 		xstream.alias("table", Table.class);
 		xstream.alias("field", Field.class);
 
 		try {
-	        
+
 			FileOutputStream fout = new FileOutputStream(path() + "save.xml");
 			ObjectOutputStream out = xstream.createObjectOutputStream(fout);
 
@@ -135,6 +136,19 @@ public class Commands {
 			String table = parameter.toUpperCase();
 			table = table.subSequence(4, parameter.length()).toString()
 					.toUpperCase();
+
+			// check if it already exists
+			Iterator<DrawTable> itd = null;
+			DrawTable td = null;
+			itd = Main.draw.iterator();
+			while (itd.hasNext()) {
+				td = itd.next();
+				if (td.t.getName().compareTo(table) == 0) {
+					Console.addLine("Already exists");
+					return;
+				}
+			}
+
 			Console.addLine("Adding \"" + table + "\"");
 			Main.draw.add(new DrawTable(new SAPTable(table)));
 		} catch (NotFoundException e) {

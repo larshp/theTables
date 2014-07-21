@@ -16,7 +16,7 @@ public class DrawTable {
 
 	DrawTable(Table t) {
 		this.t = t;
-		this.placement = new Point(300, 100);
+		this.placement = new Point(300 - Main.offsetx, 100 - Main.offsety);
 	}
 
 	Table getTable() {
@@ -43,8 +43,8 @@ public class DrawTable {
 		r2 = g2.getFont().getStringBounds(t.getName(),
 				g2.getFontRenderContext());
 		if (drawBounds)
-			g2.drawRect(placement.x, y, (int) r2.getWidth(), (int) r2
-					.getHeight());
+			g2.drawRect(placement.x, y, (int) r2.getWidth(),
+					(int) r2.getHeight());
 		g2.drawString(t.getName(), placement.x, y + (int) r2.getHeight());
 		y = y + (int) r2.getHeight();
 		if ((int) r2.getWidth() > boundWidth) {
@@ -56,11 +56,11 @@ public class DrawTable {
 		r2 = g2.getFont().getStringBounds("  " + t.getDescription(),
 				g2.getFontRenderContext());
 		if (drawBounds) {
-			g2.drawRect(placement.x, y, (int) r2.getWidth(), (int) r2
-					.getHeight());
+			g2.drawRect(placement.x, y, (int) r2.getWidth(),
+					(int) r2.getHeight());
 		}
-		g2.drawString("  " + t.getDescription(), placement.x, y
-				+ (int) r2.getHeight());
+		g2.drawString("  " + t.getDescription(), placement.x,
+				y + (int) r2.getHeight());
 		y = y + (int) r2.getHeight();
 		if ((int) r2.getWidth() > boundWidth) {
 			boundWidth = (int) r2.getWidth();
@@ -87,20 +87,20 @@ public class DrawTable {
 			r2 = g2.getFont().getStringBounds(f.getFieldName(),
 					g2.getFontRenderContext());
 			if (drawBounds) {
-				g2.drawRect(placement.x, y, (int) r2.getWidth(), (int) r2
-						.getHeight());
+				g2.drawRect(placement.x, y, (int) r2.getWidth(),
+						(int) r2.getHeight());
 			}
-			g2.drawString(f.getFieldName(), placement.x, y
-					+ (int) r2.getHeight());
+			g2.drawString(f.getFieldName(), placement.x,
+					y + (int) r2.getHeight());
 			y = y + (int) r2.getHeight();
 			fieldNameHeight = (int) r2.getHeight();
-			
+
 			if ((int) r2.getWidth() > boundWidth) {
 				boundWidth = (int) r2.getWidth();
 			}
 			// int fieldNameHeight = (int) r2.getHeight();
 			int fieldNameWidth = (int) r2.getWidth();
-			if(fieldNameWidth > maxFieldNameWidth) {
+			if (fieldNameWidth > maxFieldNameWidth) {
 				maxFieldNameWidth = fieldNameWidth;
 			}
 		}
@@ -114,14 +114,14 @@ public class DrawTable {
 				continue;
 			}
 			y = y + fieldNameHeight;
-			
+
 			g2.setFont(verdanaSmall);
 			String text = "  " + f.getDescription();
 			r2 = g2.getFont().getStringBounds(text, g2.getFontRenderContext());
 			if (drawBounds)
-				g2.drawRect(placement.x + maxFieldNameWidth, y
-						- (int) r2.getHeight(), (int) r2.getWidth(), (int) r2
-						.getHeight());
+				g2.drawRect(placement.x + maxFieldNameWidth,
+						y - (int) r2.getHeight(), (int) r2.getWidth(),
+						(int) r2.getHeight());
 			g2.drawString(text, placement.x + maxFieldNameWidth, y);
 			if ((int) r2.getWidth() + maxFieldNameWidth > boundWidth) {
 				boundWidth = (int) r2.getWidth() + maxFieldNameWidth;
@@ -135,10 +135,8 @@ public class DrawTable {
 			g2.setColor(Main.foreground);
 		}
 		if (rounded) {
-			g2
-					.drawRoundRect(placement.x - space, placement.y - space,
-							boundWidth + space * 2,
-							y - placement.y + space * 2, 10, 10);
+			g2.drawRoundRect(placement.x - space, placement.y - space,
+					boundWidth + space * 2, y - placement.y + space * 2, 10, 10);
 		} else {
 			g2.drawRect(placement.x - space, placement.y - space, boundWidth
 					+ space * 2, y - placement.y + space * 2);
