@@ -17,7 +17,7 @@ import com.sap.conn.jco.ext.DestinationDataProvider;
 // snap to grid
 
 // DD02T = table texts				ok
-// DD03L = table fields				ok
+// DD03L = table fields				ok test
 // DD04T = data element texts		ok
 
 public class Main {
