@@ -3,6 +3,9 @@ import java.awt.event.KeyListener;
 
 public class KeyListenerTables implements KeyListener {
 
+// arrow keys = move drawing area
+// + - = zoom	
+	
 	private double delta = 1.0;
 	
 	public void keyPressed(KeyEvent arg0) {

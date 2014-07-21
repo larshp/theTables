@@ -151,23 +151,23 @@ public class Main {
 		Dimension size = env.getMaximumWindowBounds().getSize();
 
 		ca = new CanvasTables(size);
-		JFrame container = new JFrame("Tables");
+		JFrame frame = new JFrame("Tables");
 
-		JPanel panel = (JPanel) container.getContentPane();
+		JPanel panel = (JPanel) frame.getContentPane();
 
 		panel.setPreferredSize(size);
 		panel.setLayout(null);
 		panel.add(ca);
 
 		// finally make the window visible
-		container.pack();
-		container.setResizable(false);
-		container.setSize(size);
+		frame.pack();
+		frame.setResizable(true);
+		frame.setSize(size);
 
-		container.setVisible(true);
+		frame.setVisible(true);
 
 		// add listeners
-		container.addWindowListener(new WindowAdapter() {
+		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}

@@ -34,6 +34,7 @@ public class Commands {
 
 	public static void setsize(String size) {
 		String sz = "";
+		Rectangle r = null;
 
 		size = size.trim();
 		if (size.length() > 2) {
@@ -41,24 +42,24 @@ public class Commands {
 		}
 
 		if (sz.compareTo("A4") == 0) {
-			Main.renderWidth = (int) PageSize.A4.getWidth();
-			Main.renderHeight = (int) PageSize.A4.getHeight();
-			Main.renderSize = sz;
-			Console.addLine("Setting Size: A4");
+			r = PageSize.A4;
 		} else if (sz.compareTo("A3") == 0) {
-			Main.renderWidth = (int) PageSize.A3.getHeight();
-			Main.renderHeight = (int) PageSize.A3.getWidth();
-			Main.renderSize = sz;
-			Console.addLine("Setting Size: A3");
+			r = PageSize.A3;
 		} else if (sz.compareTo("A2") == 0) {
-			Main.renderWidth = (int) PageSize.A2.getHeight();
-			Main.renderHeight = (int) PageSize.A2.getWidth();
-			Main.renderSize = sz;
-			Console.addLine("Setting Size: A2");			
+			r = PageSize.A2;
+		} else if (sz.compareTo("A1") == 0) {
+			r = PageSize.A1;
+		} else if (sz.compareTo("A0") == 0) {
+			r = PageSize.A0;
 		} else {
 			Console.addLine("Unknown Size \"" + sz + "\"");
+			return;
 		}
-
+		
+		Main.renderWidth = (int) r.getWidth();
+		Main.renderHeight = (int) r.getHeight();
+		Main.renderSize = sz;
+		Console.addLine("Setting Size: " + sz);
 	}
 
 	private static String path() {

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class CanvasTables extends Canvas {
@@ -11,8 +12,8 @@ public class CanvasTables extends Canvas {
 		this.size = size;
 		setBounds(0, 0, this.size.width, this.size.height);
 
-		 buffer = new BufferedImage(size.width, size.height,
-					BufferedImage.TYPE_INT_RGB);	
+		buffer = new BufferedImage(size.width, size.height,
+				BufferedImage.TYPE_INT_RGB);
 	}
 
 	public void repaint() {
@@ -21,14 +22,15 @@ public class CanvasTables extends Canvas {
 
 	public void paint(Graphics g) {
 		// clear entire screen
-	
+
 		paintWorld();
-		
+
 		g.drawImage(buffer, 0, 0, this);
-		
 	}
 
 	private void paintWorld() {
+		AffineTransform old = null;
+
 		Graphics2D g2 = (Graphics2D) buffer.getGraphics();
 
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
@@ -37,10 +39,17 @@ public class CanvasTables extends Canvas {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// clear background
-		//g2.setColor(Main.background);
-		g2.setBackground(Main.background);
+		g2.setBackground(Color.gray);
 		g2.clearRect(0, 0, size.width, size.height);
-		//g2.fillRect(0, 0, Main.renderWidth, Main.renderHeight);
+
+		old = g2.getTransform();
+		g2.translate(Main.offsetx, Main.offsety);
+		g2.scale(Main.zoom, Main.zoom);
+
+		// paint actual output
+		WorldPainter.paint(g2);
+
+		g2.setTransform(old);
 
 		// output console
 		Font courier = new Font("Courier New", Font.PLAIN, 14); // fixed console
@@ -51,12 +60,6 @@ public class CanvasTables extends Canvas {
 		for (int i = 0; i < lines.length; i++) {
 			g2.drawString(lines[i], 50, 50 + i * 15);
 		}
-
-		g2.translate(Main.offsetx, Main.offsety);
-		g2.scale(Main.zoom, Main.zoom);
-
-		// paint actual output
-		WorldPainter.paint(g2);
 
 	}
 
