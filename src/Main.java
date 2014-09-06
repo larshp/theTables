@@ -1,13 +1,15 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 import java.util.LinkedList;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+
+import javax.swing.*;
+
 import com.itextpdf.text.PageSize;
+
 import java.util.Properties;
+import java.util.concurrent.CancellationException;
+
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoDestinationManager;
 import com.sap.conn.jco.JCoException;
@@ -15,10 +17,6 @@ import com.sap.conn.jco.ext.DestinationDataProvider;
 
 // extra features:
 // snap to grid
-
-// DD02T = table texts				ok
-// DD03L = table fields				ok test
-// DD04T = data element texts		ok
 
 public class Main {
 
@@ -39,38 +37,86 @@ public class Main {
 	public static int offsetx = 0;
 	public static int offsety = 0;
 	public static double zoom = 1.0;
-	
+
 	// A3
 	public static String renderSize = "A3";
 	public static int renderWidth = (int) PageSize.A3.getHeight();
 	public static int renderHeight = (int) PageSize.A3.getWidth();
-	
-	//////////////////////////////////////////
-	
-	public static JCoDestination destination = null;
-	
-	//////////////////////////////////////////
-	
-	public static void main(String[] args) throws JCoException {
 
-        Properties connectProperties = new Properties();
-        connectProperties.setProperty(DestinationDataProvider.JCO_ASHOST, "");
-        connectProperties.setProperty(DestinationDataProvider.JCO_SYSNR,  "00");
-        connectProperties.setProperty(DestinationDataProvider.JCO_CLIENT, "000");
-        connectProperties.setProperty(DestinationDataProvider.JCO_USER,   "username");
-        connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, "password");
-        connectProperties.setProperty(DestinationDataProvider.JCO_LANG,   "en");
+	// ////////////////////////////////////////
 
-		
-        MyDestinationDataProvider myProvider = new MyDestinationDataProvider();
-        com.sap.conn.jco.ext.Environment.registerDestinationDataProvider(myProvider);
-        myProvider.changePropertiesForABAP_AS(connectProperties);
+	private static JCoDestination destination = null;
 
-	    destination = JCoDestinationManager.getDestination("SAP_SERVER");
-//	    System.out.println(destination.getAttributes());
-		
+	// ////////////////////////////////////////
+
+	public static void main(String[] args) {
 		Main m = new Main();
 		m.run();
+	}
+
+	public static JCoDestination getDest() throws JCoException, IOException {
+		final String filename = "jco.ini";
+
+		if (destination == null) {
+			Properties prop = new Properties();
+			
+			// load settings from file
+			FileInputStream in;
+			try {
+				in = new FileInputStream(filename);
+				prop.load(in);
+				in.close();
+			} catch (Exception e) {
+				// ignore if not exists or wrong format or something else happens
+			}
+			
+			JTextField hostname = new JTextField();
+			JTextField sysnr = new JTextField();
+			JTextField client = new JTextField();
+			JTextField username = new JTextField();
+			JTextField password = new JPasswordField();
+
+			hostname.setText(prop.getProperty(DestinationDataProvider.JCO_ASHOST));
+			sysnr.setText(prop.getProperty(DestinationDataProvider.JCO_SYSNR));
+			client.setText(prop.getProperty(DestinationDataProvider.JCO_CLIENT));
+			username.setText(prop.getProperty(DestinationDataProvider.JCO_USER));
+			
+			Object[] message = { "Hostname", hostname, "Instance Number",
+					sysnr, "Client", client, "Username", username, "Password",
+					password };
+			int result = JOptionPane.showConfirmDialog(null, message,
+					"Connection Settings", JOptionPane.OK_CANCEL_OPTION);
+			if (result == JOptionPane.CANCEL_OPTION) {
+				throw new CancellationException();
+			}
+
+			prop.setProperty(DestinationDataProvider.JCO_ASHOST,
+					hostname.getText());
+			prop.setProperty(DestinationDataProvider.JCO_SYSNR, sysnr.getText());
+			prop.setProperty(DestinationDataProvider.JCO_CLIENT,
+					client.getText());
+			prop.setProperty(DestinationDataProvider.JCO_USER,
+					username.getText());
+			
+			// save settings to file, without password
+			FileOutputStream out = new FileOutputStream(filename);
+			prop.store(out, "---JCO settings---");
+			out.close();
+			
+			prop.setProperty(DestinationDataProvider.JCO_PASSWD,
+					password.getText());
+			prop.setProperty(DestinationDataProvider.JCO_LANG, "en");
+
+			MyDestinationDataProvider myProvider = new MyDestinationDataProvider();
+			com.sap.conn.jco.ext.Environment
+					.registerDestinationDataProvider(myProvider);
+			myProvider.changePropertiesForABAP_AS(prop);
+
+			destination = JCoDestinationManager.getDestination("SAP_SERVER");
+			System.out.println(destination.getAttributes());
+		}
+
+		return destination;
 	}
 
 	public void run() {
@@ -104,9 +150,7 @@ public class Main {
 		t.addField(new Field("POSNR", 2, "Domain", "Sales Document Item"));
 		t.addField(new Field("MATNR", 3, "Domain", "Material Number"));
 		t.addField(new Field("MATWA", 4, "Domain", "Material entered"));
-		t
-				.addField(new Field("PMATN", 5, "Domain",
-						"Pricing reference material"));
+		t.addField(new Field("PMATN", 5, "Domain", "Pricing reference material"));
 		t.addField(new Field("CHARG", 6, "Domain", "Batch Number"));
 		t.addField(new Field("MATKL", 7, "Domain", "Material group"));
 		t.addField(new Field("ARKTX", 8, "Domain",

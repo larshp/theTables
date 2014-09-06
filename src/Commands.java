@@ -7,7 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.CancellationException;
+
 import javax.imageio.ImageIO;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
@@ -149,8 +152,10 @@ public class Commands {
 				}
 			}
 
-			Console.addLine("Adding \"" + table + "\"");
 			Main.draw.add(new DrawTable(new SAPTable(table)));
+			Console.addLine("Adding \"" + table + "\"");
+		} catch (CancellationException e) {
+			Console.addLine("Cancelled");
 		} catch (NotFoundException e) {
 			Console.addLine("Table not found");
 		} catch (Exception e) {

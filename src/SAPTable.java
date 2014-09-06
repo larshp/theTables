@@ -1,9 +1,13 @@
+import java.io.IOException;
+
 import com.sap.conn.jco.JCoException;
 import com.sap.conn.jco.JCoField;
 import com.sap.conn.jco.JCoFieldIterator;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 import com.sap.conn.jco.JCoTable;
+
+// todo, refactoring needed
 
 public class SAPTable extends Table {
 	String name;
@@ -23,8 +27,10 @@ public class SAPTable extends Table {
 		JCoFunction function = null;
 
 		try {
-			function = Main.destination.getRepository().getFunction(
+			function = Main.getDest().getRepository().getFunction(
 					"RFC_READ_TABLE");
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (JCoException e) {
 			e.printStackTrace();
 		}
@@ -41,7 +47,9 @@ public class SAPTable extends Table {
 			options.lastRow();
 
 			try {
-				function.execute(Main.destination);
+				function.execute(Main.getDest());
+			} catch (IOException e) {
+				e.printStackTrace();
 			} catch (JCoException e) {
 				e.printStackTrace();
 			}
@@ -145,8 +153,10 @@ public class SAPTable extends Table {
 		String description = "";
 
 		try {
-			function = Main.destination.getRepository().getFunction(
+			function = Main.getDest().getRepository().getFunction(
 					"RFC_READ_TABLE");
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (JCoException e) {
 			e.printStackTrace();
 		}
@@ -164,7 +174,9 @@ public class SAPTable extends Table {
 			options.lastRow();
 
 			try {
-				function.execute(Main.destination);
+				function.execute(Main.getDest());
+			} catch (IOException e) {
+				e.printStackTrace();
 			} catch (JCoException e) {
 				e.printStackTrace();
 			}
@@ -217,8 +229,10 @@ public class SAPTable extends Table {
 		JCoFunction function = null;
 
 		try {
-			function = Main.destination.getRepository().getFunction(
+			function = Main.getDest().getRepository().getFunction(
 					"RFC_READ_TABLE");
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (JCoException e) {
 			e.printStackTrace();
 		}
@@ -236,7 +250,9 @@ public class SAPTable extends Table {
 			options.lastRow();
 
 			try {
-				function.execute(Main.destination);
+				function.execute(Main.getDest());
+			} catch (IOException e) {
+				e.printStackTrace();
 			} catch (JCoException e) {
 				e.printStackTrace();
 			}

@@ -5,3 +5,5 @@ jar
 .project
 out.png
 *.pdf
+jco.ini
+dev_jco_rfc.trc
